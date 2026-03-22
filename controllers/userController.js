@@ -1,6 +1,9 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 export function createUser(req,res){
 
@@ -34,8 +37,6 @@ export function createUser(req,res){
 
 export function loginUser(req,res){
 
-  console.log(req.body.email)
-  
   User.findOne(
     {
         email : req.body.email
@@ -44,9 +45,9 @@ export function loginUser(req,res){
     (user)=>{
 
         if(user == null){
-            res.json({
+            return res.status(404).json({
             message : "User with given email not found"
-            })
+        })
         }else{
 
             const isPasswordValid = bcrypt.compareSync(req.body.password , user.password)
@@ -62,7 +63,7 @@ export function loginUser(req,res){
                     image : user.image,
                     isEmailVerified : user.isEmailVerified,
 
-                } , "i-computers-54!");
+                } , process.env.JWT_SECRET);
 
                 console.log(token)
 
@@ -80,6 +81,7 @@ export function loginUser(req,res){
                 res.json({
                     message : "Login successful",
                     token : token,
+                    role : user.role,
                 })
             }else{
                 res.status(403).json(
@@ -92,11 +94,9 @@ export function loginUser(req,res){
         
     }
   ).catch(() => {
-    res.status(500).res.json(
-    {
-        message : "Internal sever erroe"
-    }
-    )
+    res.status(500).json({
+    message : "Internal server error"
+    })
 })
     
 }
