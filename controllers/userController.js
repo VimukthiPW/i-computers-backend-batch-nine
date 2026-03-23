@@ -63,9 +63,10 @@ export function loginUser(req,res){
                     image : user.image,
                     isEmailVerified : user.isEmailVerified,
 
-                } , process.env.JWT_SECRET);
-
-                console.log(token)
+                } , 
+                process.env.JWT_SECRET,
+                { expiresIn: req.body.rememberme ? "30d" : "48h"}
+                );
 
                 console.log({
                     email : user.email,
