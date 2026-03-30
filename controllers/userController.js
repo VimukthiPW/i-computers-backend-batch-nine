@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 
 dotenv.config()
 
+//images
+
 export function createUser(req,res){
 
     const hashedPassword = bcrypt.hashSync(req.body.password , 10)
@@ -60,7 +62,7 @@ export function loginUser(req,res){
                     firstName : user.firstName,
                     lastName : user.lastName,
                     role : user.role,
-                    image : user.image,
+                    images : user.images,
                     isEmailVerified : user.isEmailVerified,
 
                 } , 
@@ -73,7 +75,7 @@ export function loginUser(req,res){
                     firstName : user.firstName,
                     lastName : user.lastName,
                     role : user.role,
-                    image : user.image,
+                    images : user.images,
                     isEmailVerified : user.isEmailVerified,
             })
 

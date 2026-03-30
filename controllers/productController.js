@@ -2,11 +2,13 @@ import Product from "../models/product.js";
 import { isAdmin } from "./userController.js";
 
 export async function createProduct(req,res) {
-
+//image
    if(!isAdmin(req)){
     res.status(403).json({message: "Access denied. Admins only."});
     return;
    }
+
+   console.log(req.body.images)
 
    try{
     
@@ -35,12 +37,15 @@ export async function createProduct(req,res) {
         return;
     }
     data.price = req.body.price;
-    data.labelledPrice = req.body.labelledPrice || req.body.price
-    data.category = req.body.category || "Others"
-    data.image = req.body.image || ["/images/default-product-1.png","/images/default-product-2.png"]
-    data.isVisible = req.body.isVisible
-    data.brand = req.body.brand || "Generic"
-    data.model = req.body.model || "standard"
+    data.labelledPrice = req.body.labelledPrice || req.body.price;
+    data.category = req.body.category || "Others";
+    data.images = req.body.images || [
+        "/images/default-product-1.png",
+        "/images/default-product-2.png",
+    ];
+    data.isVisible = req.body.isVisible;
+    data.brand = req.body.brand || "Generic";
+    data.model = req.body.model || "standard";
 
     const newProduct = new Product(data);
 
@@ -55,6 +60,8 @@ export async function createProduct(req,res) {
 
 export async function getProducts(req,res){
 
+    console.log("Get products api called");
+
     try{
 
         if(isAdmin(req)){
@@ -66,7 +73,7 @@ export async function getProducts(req,res){
         }
 
     }catch(error){
-        res.status(500).json({ message: "Error fetching products", error: error})
+        res.status(500).json({ message: "Error fetching products", error: error});
     }
 
 }
@@ -76,6 +83,10 @@ export async function deleteProduct(req,res) {
         req.status(403).json({ message: "Access . Admin only"});
         return;
     }
+
+    console.log(req.body.images);
+
+
     try {
         const productId = req.params.productId;
 
@@ -115,12 +126,12 @@ export async function updateProduct(req, res) {
         return;
     }
     data.price = req.body.price;
-    data.labelledPrice = req.body.labelledPrice || req.body.price
-    data.category = req.body.category || "Others"
-    data.image = req.body.image || ["/images/default-product-1.png","/images/default-product-2.png"]
-    data.isVisible = req.body.isVisible
-    data.brand = req.body.brand || "Generic"
-    data.model = req.body.model || "standard"
+    data.labelledPrice = req.body.labelledPrice || req.body.price;
+    data.category = req.body.category || "Others";
+    data.images = req.body.images || ["/images/default-product-1.png","/images/default-product-2.png"];
+    data.isVisible = req.body.isVisible;
+    data.brand = req.body.brand || "Generic";
+    data.model = req.body.model || "standard";
 
     await Product.updateOne({ productId: productId}, data);
 

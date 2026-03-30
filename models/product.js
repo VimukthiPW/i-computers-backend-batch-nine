@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema(
             type : String,
             default : "Others"
         },
-        image : {
+        images : {
             type : [String],
             default : ["/images/default-product-1.png","/images/default-product-2.png"]
         },
